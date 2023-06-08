@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nav-adjustment {
+  @apply mt-[4.5rem] bg-slate-600;
+  min-height: calc(100vh - 4.5rem);
+}
