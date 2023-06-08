@@ -14,10 +14,10 @@ export const todosRouter = createTRPCRouter({
       };
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.todos.findMany();
   }),
-  getByCompleted: publicProcedure.query(({ ctx }) => {
+  getByCompleted: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.todos.findMany({
       where: {
         completed: true,
