@@ -12,7 +12,7 @@ const listProviders = async () => {
 		providers: await getProviders(),
 	};
 };
-interface provider {
+export interface provider {
 	id: string;
 	name: string;
 	type: string;
@@ -42,7 +42,7 @@ const Button = ({ provider, Icon }: ButtonProps) => {
 		e.preventDefault();
 	};
 	return (
-		<button className="flex rounded-lg bg-red-200 px-3 py-2" onClick={onSubmit}>
+		<button className="flex max-h-8 w-full rounded-lg bg-red-200 px-3 py-2" onClick={onSubmit}>
 			{Icon} <p className="ml-4">Continue with {provider.name}</p>
 		</button>
 	);
@@ -61,16 +61,20 @@ const LoginPage = () => {
 	}, []);
 
 	return (
-		<div className={'flex h-full flex-col items-center justify-center gap-1 '}>
-			{data.map((provider: provider, i) => {
-				return (
-					<Button
-						provider={provider}
-						key={`${i}-${provider.id}`}
-						Icon={provider.id === 'discord' ? <IconBrandDiscordFilled /> : <IconBrandGithub />}
-					/>
-				);
-			})}
+		<div className={'flex h-screen w-full flex-col items-center justify-center gap-1 bg-purple-200'}>
+			<div className="flex h-3/4 w-1/4 flex-wrap justify-center bg-teal-900">
+				<h1 className="w-full text-4xl font-bold">Sign in</h1>
+				<p className="w-full text-lg">Sign in to continue to Todoz</p>
+				{data.map((provider: provider, i) => {
+					return (
+						<Button
+							provider={provider}
+							key={`${i}-${provider.id}`}
+							Icon={provider.id === 'discord' ? <IconBrandDiscordFilled /> : <IconBrandGithub />}
+						/>
+					);
+				})}
+			</div>
 		</div>
 	);
 };
