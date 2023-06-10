@@ -1,6 +1,11 @@
 'use client';
-import { getProviders, signIn } from 'next-auth/react';
+import { getProviders, signIn, type SignInResponse } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { IconBrandDiscordFilled, IconBrandGithub } from '@tabler/icons-react';
 import React, { useRef, useState, useEffect } from 'react';
+import type { GetServerSidePropsContext } from 'next/types';
+import { authOptions } from 'todoz/server/auth';
+import { fetchData } from 'next-auth/client/_utils';
 
 const listProviders = async () => {
 	return {
@@ -14,20 +19,31 @@ interface provider {
 	signinUrl: string;
 	callbackUrl: string;
 }
-const Button = ({ provider }: { provider: provider }) => {
+type ButtonProps = {
+	provider: provider;
+	Icon: React.JSX.Element;
+};
+const Button = ({ provider, Icon }: ButtonProps) => {
 	const { id, name, type, signinUrl, callbackUrl } = provider;
-	const onSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		console.log('is clicking');
-		const result = await signIn(id, {
-			callbackUrl: callbackUrl,
-			redirect: false,
-		});
-		console.log(result);
+	console.log(provider);
+	const [result, setResult] = useState<SignInResponse | undefined>();
+	const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		signIn(id, {
+			redirect: true,
+			callbackUrl: '/',
+		})
+			.then(data => {
+				setResult(data);
+			})
+			.catch(err => {
+				console.log(err);
+			});
+		// console.log(result);
 		e.preventDefault();
 	};
 	return (
-		<button onClick={void onSubmit} className="rounded-lg bg-red-200 px-3 py-2">
-			{provider.name}
+		<button className="flex rounded-lg bg-red-200 px-3 py-2" onClick={onSubmit}>
+			{Icon} <p className="ml-4">Continue with {provider.name}</p>
 		</button>
 	);
 };
@@ -45,13 +61,15 @@ const LoginPage = () => {
 	}, []);
 
 	return (
-		<div
-			className={
-				'flex h-screen flex-col items-center  justify-center gap-1 bg-gradient-to-br from-cyan-300 to-sky-600'
-			}
-		>
+		<div className={'flex h-full flex-col items-center justify-center gap-1 '}>
 			{data.map((provider: provider, i) => {
-				return <Button provider={provider} key={`${i}-${provider.id}`}></Button>;
+				return (
+					<Button
+						provider={provider}
+						key={`${i}-${provider.id}`}
+						Icon={provider.id === 'discord' ? <IconBrandDiscordFilled /> : <IconBrandGithub />}
+					/>
+				);
 			})}
 		</div>
 	);
