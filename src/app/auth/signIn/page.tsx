@@ -25,13 +25,9 @@ type ButtonProps = {
 };
 const Button = ({ provider, Icon }: ButtonProps) => {
 	const { id, name, type, signinUrl, callbackUrl } = provider;
-	console.log(provider);
 	const [result, setResult] = useState<SignInResponse | undefined>();
 	const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		signIn(id, {
-			redirect: true,
-			callbackUrl: '/',
-		})
+		signIn(id)
 			.then(data => {
 				setResult(data);
 			})
@@ -42,9 +38,28 @@ const Button = ({ provider, Icon }: ButtonProps) => {
 		e.preventDefault();
 	};
 	return (
-		<button className="flex max-h-8 w-full rounded-lg bg-red-200 px-3 py-2" onClick={onSubmit}>
-			{Icon} <p className="ml-4">Continue with {provider.name}</p>
+		<button
+			className="my-4 flex w-full rounded-lg border border-white p-2 hover:bg-white hover:text-black"
+			onClick={onSubmit}
+		>
+			{Icon} <p className="ml-4 w-full">Continue with {provider.name}</p>
 		</button>
+	);
+};
+
+type InputProps = {
+	type: string;
+	children: React.ReactNode;
+};
+const Input = ({ type, children }: InputProps): React.JSX.Element => {
+	return (
+		<>
+			<label className="ml-2">{children}</label>
+			<input
+				type={type}
+				className="mb-4 w-full border-b border-white bg-transparent p-2 focus-visible:outline-none"
+			/>
+		</>
 	);
 };
 
@@ -61,19 +76,31 @@ const LoginPage = () => {
 	}, []);
 
 	return (
-		<div className={'flex h-screen w-full flex-col items-center justify-center gap-1 bg-purple-200'}>
-			<div className="flex h-3/4 w-1/4 flex-wrap justify-center bg-teal-900">
-				<h1 className="w-full text-4xl font-bold">Sign in</h1>
-				<p className="w-full text-lg">Sign in to continue to Todoz</p>
-				{data.map((provider: provider, i) => {
-					return (
-						<Button
-							provider={provider}
-							key={`${i}-${provider.id}`}
-							Icon={provider.id === 'discord' ? <IconBrandDiscordFilled /> : <IconBrandGithub />}
-						/>
-					);
-				})}
+		<div className={'flex h-screen w-full flex-col items-center justify-center '}>
+			<div className="flex h-3/4 w-1/3 flex-wrap justify-center overflow-hidden rounded-xl">
+				<div className=" flex h-full w-1/2 flex-wrap bg-[url('/waves_bg.webp')]">
+					<div className="m-4 w-full backdrop-blur-[4px]"></div>
+				</div>
+				<div className="flex h-full w-1/2 flex-wrap p-8">
+					<h1 className="flex w-full items-center justify-center text-4xl font-bold">Sign in</h1>
+					<p className="flex w-full items-center justify-center text-lg">Sign in to continue to Todoz</p>
+					<div className="h-1/2 w-full">
+						<form action="">
+							<Input type="email">Email</Input>
+							<Input type="password">Password</Input>
+						</form>
+						<div className="flex w-full items-center justify-center ">- Or -</div>
+						{data.map((provider: provider, i) => {
+							return (
+								<Button
+									provider={provider}
+									key={`${i}-${provider.id}`}
+									Icon={provider.id === 'discord' ? <IconBrandDiscordFilled /> : <IconBrandGithub />}
+								/>
+							);
+						})}
+					</div>
+				</div>
 			</div>
 		</div>
 	);
