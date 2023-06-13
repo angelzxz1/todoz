@@ -1,11 +1,12 @@
 'use client';
-import { getProviders, signIn, type SignInResponse } from 'next-auth/react';
-import { getServerSession } from 'next-auth/next';
+import { getProviders, signIn } from 'next-auth/react';
+// import { type SignInResponse } from 'next-auth/react';
+// import { getServerSession } from 'next-auth/next';
 import { IconBrandDiscordFilled, IconBrandGithub } from '@tabler/icons-react';
-import React, { useRef, useState, useEffect } from 'react';
-import type { GetServerSidePropsContext } from 'next/types';
-import { authOptions } from 'todoz/server/auth';
-import { fetchData } from 'next-auth/client/_utils';
+import React, { useState, useEffect } from 'react';
+// import type { GetServerSidePropsContext } from 'next/types';
+// import { authOptions } from 'todoz/server/auth';
+// import { fetchData } from 'next-auth/client/_utils';
 
 const listProviders = async () => {
 	return {
@@ -24,22 +25,16 @@ type ButtonProps = {
 	Icon: React.JSX.Element;
 };
 const Button = ({ provider, Icon }: ButtonProps) => {
-	const { id, name, type, signinUrl, callbackUrl } = provider;
-	const [result, setResult] = useState<SignInResponse | undefined>();
-	const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		signIn(id)
-			.then(data => {
-				setResult(data);
-			})
-			.catch(err => {
-				console.log(err);
-			});
-		// console.log(result);
+	const { id } = provider;
+	// const [result, setResult] = useState<SignInResponse | undefined>();
+	const onSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
+		return await signIn(id);
 	};
 	return (
 		<button
 			className="my-4 flex w-full rounded-lg border border-white p-2 hover:bg-white hover:text-black"
+			// eslint-disable-next-line @typescript-eslint/no-misused-promises
 			onClick={onSubmit}
 		>
 			{Icon} <p className="ml-4 w-full">Continue with {provider.name}</p>
@@ -76,12 +71,14 @@ const LoginPage = () => {
 	}, []);
 
 	return (
-		<div className={'flex h-screen w-full flex-col items-center justify-center '}>
-			<div className="flex h-3/4 w-1/3 flex-wrap justify-center overflow-hidden rounded-xl">
+		<div className="flex h-screen w-full flex-col items-center justify-center ">
+			<div className="flex h-3/4 w-2/5 flex-wrap justify-center overflow-hidden rounded-xl">
 				<div className=" flex h-full w-1/2 flex-wrap bg-[url('/waves_bg.webp')]">
-					<div className="m-4 w-full backdrop-blur-[4px]"></div>
+					<div className="m-4 w-full bg-[#372F4883] backdrop-blur-[4px]">
+						<h1 className="flex w-full items-center justify-center text-4xl font-bold"></h1>
+					</div>
 				</div>
-				<div className="flex h-full w-1/2 flex-wrap p-8">
+				<div className="flex h-full w-1/2 flex-wrap rounded-r-xl bg-gradient-to-br from-darkPurple-dark to-darkBlue-dark p-8 ">
 					<h1 className="flex w-full items-center justify-center text-4xl font-bold">Sign in</h1>
 					<p className="flex w-full items-center justify-center text-lg">Sign in to continue to Todoz</p>
 					<div className="h-1/2 w-full">
