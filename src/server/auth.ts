@@ -1,8 +1,9 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { type GetServerSidePropsContext } from 'next';
 import { getServerSession, type NextAuthOptions, type DefaultSession } from 'next-auth';
-import DiscordProvider from 'next-auth/providers/discord';
 import GithubProvider from 'next-auth/providers/github';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 import { env } from 'todoz/env.mjs';
 import { prisma } from 'todoz/server/db';
 
@@ -44,13 +45,42 @@ export const authOptions: NextAuthOptions = {
 	},
 	adapter: PrismaAdapter(prisma),
 	providers: [
-		DiscordProvider({
-			clientId: env.DISCORD_CLIENT_ID,
-			clientSecret: env.DISCORD_CLIENT_SECRET,
+		CredentialsProvider({
+			name: 'Credentials',
+			credentials: {
+				username: { label: 'Username', type: 'text' },
+				password: { label: 'Password', type: 'password' },
+			},
+			async authorize(credentials, req) {
+				console.log(credentials, 'Req: ', req);
+				const res = await fetch('http://localhost:3000/auth/login', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						username: credentials?.username,
+						password: credentials?.password,
+					}),
+				});
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+				const user = await res.json();
+				console.log(user);
+				if (user) {
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+					return user;
+				} else {
+					return null;
+				}
+			},
 		}),
 		GithubProvider({
 			clientId: env.GITHUB_CLIENT_ID,
 			clientSecret: env.GITHUB_CLIENT_SECRET,
+		}),
+		GoogleProvider({
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
 		}),
 		/**
 		 * ...add more providers here.
@@ -65,6 +95,7 @@ export const authOptions: NextAuthOptions = {
 	pages: {
 		signIn: '/auth/signIn',
 	},
+	secret: env.NEXTAUTH_SECRET,
 };
 
 /**
