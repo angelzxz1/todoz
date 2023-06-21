@@ -10,3 +10,109 @@
 	@apply mt-[4.5rem] bg-slate-600;
 	min-height: calc(100vh - 4.5rem);
 }
+
+.rotation-father {
+	transform-style: preserve-3d;
+	animation: rotation ease-in-out 6s infinite;
+}
+
+@keyframes rotation {
+	0% {
+		transform: rotateX(0deg);
+		width: 5rem;
+	}
+	27% {
+		transform: rotateX(0deg);
+		width: 5rem;
+	}
+	33% {
+		transform: rotateX(120deg);
+		width: 7rem;
+	}
+	61% {
+		transform: rotateX(120deg);
+		width: 7rem;
+	}
+	66% {
+		transform: rotateX(240deg);
+		width: 8.5rem;
+	}
+	95% {
+		transform: rotateX(240deg);
+		width: 8.5rem;
+	}
+	100% {
+		transform: rotateX(360deg);
+		width: 5rem;
+	}
+}
+
+.daily {
+	transform: rotateX(calc(-120deg * 0)) translateZ(0.8rem);
+	animation: rotation-daily ease-in-out 6s infinite;
+}
+.weekly {
+	transform: rotateX(calc(-120deg * 1)) translateZ(0.8rem);
+	animation: rotation-weekly ease-in-out 6s infinite;
+}
+.monthly {
+	transform: rotateX(calc(-120deg * 2)) translateZ(0.8rem);
+	animation: rotation-monthly ease-in-out 6s infinite;
+}
+
+@keyframes rotation-daily {
+	0% {
+		opacity: 1;
+	}
+	27% {
+		opacity: 1;
+	}
+	33% {
+		opacity: 0;
+	}
+	95% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes rotation-weekly {
+	0% {
+		opacity: 0;
+	}
+	27% {
+		opacity: 0;
+	}
+	33% {
+		opacity: 1;
+	}
+	61% {
+		opacity: 1;
+	}
+	66% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes rotation-monthly {
+	0% {
+		opacity: 0;
+	}
+	61% {
+		opacity: 0;
+	}
+	66% {
+		opacity: 1;
+	}
+	95% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}

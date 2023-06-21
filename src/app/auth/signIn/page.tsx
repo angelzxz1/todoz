@@ -7,6 +7,21 @@ import React, { useState, useEffect } from 'react';
 // import type { GetServerSidePropsContext } from 'next/types';
 // import { authOptions } from 'todoz/server/auth';
 // import { fetchData } from 'next-auth/client/_utils';
+function generateRandomArray(limit: number, size: number): number[] {
+	const result: number[] = [];
+
+	for (let i = 0; i < size - 1; i++) {
+		const maxRandom = Math.floor((limit / 6) * 2); // Maximum allowed random number
+		const minRandom = Math.floor(limit / 10) + 1;
+		const random = Math.floor(Math.random() * maxRandom) + minRandom;
+		result.push(random);
+		limit -= random;
+	}
+
+	result.push(limit); // Add the remaining limit as the last element
+
+	return result;
+}
 
 const listProviders = async () => {
 	return {
@@ -40,18 +55,18 @@ type InputProps = {
 	type: string;
 	value: string;
 	setValue: React.Dispatch<React.SetStateAction<string>>;
-	children: React.ReactNode;
+	placeholder: string;
 };
-const Input = ({ type, value, setValue, children }: InputProps): React.JSX.Element => {
+const Input = ({ type, value, setValue, placeholder }: InputProps): React.JSX.Element => {
 	return (
 		<>
-			<label className="ml-2">{children}</label>
 			<input
 				type={type}
 				value={value}
 				onChange={e => {
 					setValue(e.target.value);
 				}}
+				placeholder={placeholder}
 				className="mb-4 w-full border-b border-white bg-transparent p-2 focus-visible:outline-none"
 			/>
 		</>
@@ -71,16 +86,57 @@ const LoginPage = () => {
 				console.log(e);
 			});
 	}, []);
-
+	const items = [
+		generateRandomArray(100, 5),
+		generateRandomArray(100, 7),
+		generateRandomArray(100, 4),
+		generateRandomArray(100, 6),
+		generateRandomArray(100, 5),
+		generateRandomArray(100, 2),
+		generateRandomArray(100, 3),
+		generateRandomArray(100, 2),
+		generateRandomArray(100, 5),
+		generateRandomArray(100, 7),
+	];
+	console.log(items);
 	return (
-		<div className="flex h-screen w-full flex-col items-center justify-center ">
-			<div className="flex h-3/4 w-2/5 flex-wrap justify-center overflow-hidden rounded-xl">
-				<div className=" flex h-full w-1/2 flex-wrap bg-[url('/waves_bg.webp')]">
-					<div className="m-4 w-full bg-[#372F4883] backdrop-blur-[4px]">
-						<h1 className="flex w-full items-center justify-center text-4xl font-bold"></h1>
+		<div className="flex h-screen w-full flex-col items-center justify-center">
+			<div className="flex h-3/4 w-1/2 flex-wrap justify-center overflow-hidden rounded-xl ">
+				<div
+					className="flex h-full w-1/2  border-r
+						border-white bg-gradient-to-bl
+						from-darkPurple-dark 
+						to-darkBlue-dark p-4 "
+				>
+					<div className="flex h-full w-full flex-wrap gap-1 ">
+						{items.map((item, i) => (
+							<div key={i} className="flex h-[9%] w-full gap-1">
+								{item.map((e, j) => {
+									const w: string = e.toString() + '%';
+									return (
+										<div
+											key={`${i}-${j}`}
+											className="rounded-md bg-gradient-to-br from-purple-800 to-black"
+											style={{ width: w }}
+										/>
+									);
+								})}
+							</div>
+						))}
 					</div>
 				</div>
-				<div className="flex h-full w-1/2 flex-wrap rounded-r-xl bg-gradient-to-br from-darkPurple-dark to-darkBlue-dark p-8 ">
+				<div
+					className="
+						flex 
+						h-full 
+						w-1/2 
+						flex-wrap 
+						rounded-r-xl 
+						bg-gradient-to-br 
+						from-darkPurple-dark 
+						to-darkBlue-dark 
+						p-4"
+				>
 					<div className="flex h-1/5 w-full flex-wrap text-lg">
 						<h1 className="flex h-fit w-full items-center justify-center  text-4xl font-bold">Sign in</h1>
 						<p className="flex h-fit w-full items-center justify-center ">Sign in to continue to Todoz</p>
@@ -88,12 +144,8 @@ const LoginPage = () => {
 
 					<div className="flex h-4/5 w-full flex-col  justify-evenly">
 						<form method="post" action="/api/auth/callback/credentials">
-							<Input type="text" value={username} setValue={setUsername}>
-								Username
-							</Input>
-							<Input type="password" value={password} setValue={setPassword}>
-								Password
-							</Input>
+							<Input type="text" value={username} setValue={setUsername} placeholder="Username" />
+							<Input type="password" value={password} setValue={setPassword} placeholder="Password" />
 							<button
 								className="my-4 flex w-full items-center justify-center rounded-lg border border-white p-2 hover:bg-white hover:text-black"
 								onClick={() =>
