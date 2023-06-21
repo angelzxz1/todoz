@@ -1,12 +1,12 @@
-"use client";
-import { SessionProvider } from "next-auth/react";
-import React, { type ReactNode } from "react";
-
+'use client';
+import { SessionProvider } from 'next-auth/react';
+import React, { type ReactNode } from 'react';
+import { api } from 'todoz/utils/api';
 interface Props {
-  children: ReactNode;
+	children: ReactNode;
 }
 function Providers({ children }: Props) {
-  return <SessionProvider>{children}</SessionProvider>;
+	return <SessionProvider>{children}</SessionProvider>;
 }
 
-export default Providers;
+export default api.withTRPC(Providers);

@@ -16,11 +16,13 @@ type profileLinkProps = {
 	id: string;
 };
 const profileLink = ({ name, id }: profileLinkProps) => {
-	return <Link href={`/user/${id}`}> {name?name:"Extranger"} </Link>;
+	return <Link href={`/user/${id}`}> {name ? name : 'Extranger'} </Link>;
 };
 
 const NavBar = (): React.JSX.Element => {
 	const { data: sessionData, status } = useSession();
+	const [profile, setProfile] = useState<profileLinkProps>({ name: '', id: '' });
+
 	return (
 		<nav className="fixed flex w-full items-center justify-between bg-[#250e4785] leading-none backdrop-blur-[8px]">
 			<div className="w-1/5 ">
