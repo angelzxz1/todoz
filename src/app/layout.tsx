@@ -18,7 +18,7 @@ export default function RootLayout({ children }: Props) {
 			<Providers>
 				<body className={`${inter.className} bg-black text-white`}>
 					<NavBar />
-					<div className="pt-[2.5rem]">{children}</div>
+					<div className="pt-[2.5rem] h-sc">{children}</div>
 				</body>
 			</Providers>
 		</html>

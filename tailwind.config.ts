@@ -4,6 +4,9 @@ export default {
 	content: ['./src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
+			height: {
+				'nav-screen': 'calc(100vh - 2.5rem)',
+			},
 			animation: {
 				xMove: 'xMove 1s ease-in-out infinite',
 			},
