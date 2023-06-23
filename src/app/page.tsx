@@ -36,7 +36,7 @@ const Page = (): React.JSX.Element => {
 						<div className="mr-2">tool</div>
 						<div className="mr-2">for</div>
 						<div className="mr-2">management</div>
-						<div className="mr-2">of</div> <Turnable />
+						<div className="">of</div> <Turnable />
 						<div>tasks.</div>
 					</h2>
 				</div>
@@ -55,7 +55,7 @@ const Page = (): React.JSX.Element => {
 			<div className="flex h-[24rem] w-full gap-4 px-4 lg:h-[12rem]">
 				<div className="h-full w-1/4 rounded-2xl bg-orange-300"></div>
 				<div className="flex h-full w-2/3 items-center overflow-hidden rounded-2xl bg-teal-300">
-					<p className=" p-4 text-justify text-[1.25rem]">
+					<div className=" p-4 text-justify text-[1.25rem]">
 						Created by{' '}
 						<a
 							href="https://www.magenz.dev"
@@ -67,18 +67,18 @@ const Page = (): React.JSX.Element => {
 						important deadline again. Receive alerts and reminders directly to your email or phone, ensuring
 						that you stay on top of your tasks wherever you are. Whether it&lsquo;s a critical work
 						assignment, a personal goal, or a simple grocery list, Todoz keeps you informed and accountable.
-					</p>
+					</div>
 				</div>
 				<div className="h-full w-1/12 rounded-2xl bg-red-400"></div>
 			</div>
 			<div className="flex h-[16rem] w-full gap-4 px-4 md:h-[12rem]">
 				<div className="flex h-full w-1/5 items-center rounded-2xl bg-slate-400">
-					<p className="p-4 text-justify text-[1.25rem]">
+					<div className="p-4 text-justify text-[1.25rem]">
 						<div className="flex w-full justify-center">
 							<IconNotification stroke="1" />
 						</div>
 						Receive alerts and reminders directly to your email or phone
-					</p>
+					</div>
 				</div>
 				<div className="flex h-full w-[30%] items-center rounded-2xl bg-yellow-300">
 					<p className=" p-4 text-justify text-[1.25rem]">

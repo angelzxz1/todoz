@@ -21,7 +21,6 @@ const profileLink = ({ name, id }: profileLinkProps) => {
 
 const NavBar = (): React.JSX.Element => {
 	const { data: sessionData, status } = useSession();
-	const [profile, setProfile] = useState<profileLinkProps>({ name: '', id: '' });
 
 	return (
 		<nav className="fixed flex w-full items-center justify-between bg-[#250e4785] leading-none backdrop-blur-[8px]">
