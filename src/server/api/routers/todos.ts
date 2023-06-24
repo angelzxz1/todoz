@@ -28,4 +28,20 @@ export const todosRouter = createTRPCRouter({
 			},
 		});
 	}),
+	addTodo: protectedProcedure
+		.input(
+			z.object({
+				title: z.string(),
+				userID: z.string(),
+			}),
+		)
+		.mutation(({ ctx, input }) => {
+			return ctx.prisma.todos.create({
+				data: {
+					title: input.title,
+					completed: false,
+					userId: input.userID,
+				},
+			});
+		}),
 });
