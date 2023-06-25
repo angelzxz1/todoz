@@ -1,15 +1,17 @@
 'use client';
-import { todos } from '@prisma/client';
+import { type todos } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState, useRef, type MutableRefObject } from 'react';
 import { api } from 'todoz/utils/api';
+import { motion } from 'framer-motion';
 
 type MainBodyProps = {
 	id: string;
 };
 const MainBody = ({ id }: MainBodyProps) => {
 	const { data, isLoading: todosLoading } = api.todos.getByUser.useQuery({ userId: id });
+	const constraintsRef = useRef(null);
 	const [list, setList] = useState<todos[]>([]);
 	useEffect(() => {
 		console.log('rerendering');
@@ -21,10 +23,10 @@ const MainBody = ({ id }: MainBodyProps) => {
 	if (!data) return <div>Something went wrong</div>;
 
 	return (
-		<main className="h-full w-full ">
-			<CreateTodo userId={id} setList={setList} />
+		<main className="w-ful h-screen pt-[3rem]" ref={constraintsRef}>
+			<CreateTodo userId={id} setList={setList} constraintsRef={constraintsRef} />
 			{list.length > 0 ? (
-				<div className="flex gap-2 overflow-x-auto">
+				<div className="flex gap-2 overflow-x-auto py-2">
 					{list.map(item => (
 						<TodoCard id={item.id} completed={item.completed} key={item.id} title={item.title} />
 					))}
@@ -66,7 +68,13 @@ type TodoCard = {
 };
 const TodoCard = ({ id, title, completed }: TodoCard) => {
 	return (
-		<div key={id} className="rounded-xl bg-teal-400 p-4">
+		<div key={id} className="relative rounded-xl bg-teal-400 p-4">
+			<button
+				onClick={() => {}}
+				className="absolute right-[0] top-[0] flex h-[1.25rem] w-[1.25rem] -translate-y-1/3 translate-x-1/3 items-center justify-center rounded-full bg-red-500 leading-none"
+			>
+				X
+			</button>
 			{title}
 		</div>
 	);
@@ -75,8 +83,9 @@ const TodoCard = ({ id, title, completed }: TodoCard) => {
 type CreateTodoProps = {
 	userId: string;
 	setList: Dispatch<SetStateAction<todos[]>>;
+	constraintsRef: MutableRefObject<null>;
 };
-const CreateTodo = ({ userId, setList }: CreateTodoProps) => {
+const CreateTodo = ({ userId, setList, constraintsRef }: CreateTodoProps) => {
 	const [title, setTitle] = useState<string>('');
 	const { mutate, isLoading: isPosting } = api.todos.addTodo.useMutation({
 		onSuccess: e => {
@@ -90,7 +99,11 @@ const CreateTodo = ({ userId, setList }: CreateTodoProps) => {
 		},
 	});
 	return (
-		<div className="fixed right-0 h-[24rem] w-[16rem] rounded-lg border border-white bg-[#ffffff55] backdrop-blur-lg">
+		<motion.div
+			className="fixed right-0 z-10 h-[24rem] w-[16rem] rounded-lg border border-white bg-[#ffffff55] backdrop-blur-lg"
+			drag
+			dragConstraints={constraintsRef}
+		>
 			<input
 				placeholder="title"
 				className="w-full border-b bg-transparent p-2 text-center"
@@ -105,7 +118,7 @@ const CreateTodo = ({ userId, setList }: CreateTodoProps) => {
 			>
 				Add
 			</button>
-		</div>
+		</motion.div>
 	);
 };
 
