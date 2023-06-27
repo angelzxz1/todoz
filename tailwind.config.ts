@@ -4,8 +4,11 @@ export default {
 	content: ['./src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
+			boxShadow: {
+				button: 'inset -0.5rem -0.5rem 0.75rem 0.05rem',
+			},
 			height: {
-				'nav-screen': 'calc(100vh - 2.5rem)',
+				'nav-screen': 'calc(100vh - 0rem)',
 			},
 			animation: {
 				xMove: 'xMove 1s ease-in-out infinite',

@@ -35,7 +35,9 @@ const NavBar = (): React.JSX.Element => {
 					)}
 				</h1>
 			</div>
-			<div className="w-3/5 ">center</div>
+			<div className="w-3/5 ">
+				<Link href="/">Home</Link>
+			</div>
 			<div className="flex w-1/5 justify-end ">
 				{status === 'loading' ? (
 					<LoadingButton />

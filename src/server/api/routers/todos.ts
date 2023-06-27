@@ -7,21 +7,23 @@ export const todosRouter = createTRPCRouter({
 			greeting: `Hello ${input.text}`,
 		};
 	}),
-
-	getAll: protectedProcedure.query(({ ctx }) => {
-		return ctx.prisma.todos.findMany();
-	}),
-	getByCompleted: protectedProcedure.query(({ ctx }) => {
+	getByCompleted: protectedProcedure.input(z.object({ userId: z.string() })).query(({ ctx, input }) => {
 		return ctx.prisma.todos.findMany({
 			where: {
+				userId: input.userId,
 				completed: true,
 			},
 		});
 	}),
-	// addTodo:protectedProcedure.input(z.object({title:z.string()})).mutation(({input})=>{
-
-	// }),
-	getByUser: protectedProcedure.input(z.object({ userId: z.string() })).query(({ ctx, input }) => {
+	getByNotCompleted: protectedProcedure.input(z.object({ userId: z.string() })).query(({ ctx, input }) => {
+		return ctx.prisma.todos.findMany({
+			where: {
+				userId: input.userId,
+				completed: false,
+			},
+		});
+	}),
+	getAll: protectedProcedure.input(z.object({ userId: z.string() })).query(({ ctx, input }) => {
 		return ctx.prisma.todos.findMany({
 			where: {
 				userId: input.userId,
@@ -33,6 +35,7 @@ export const todosRouter = createTRPCRouter({
 			z.object({
 				title: z.string(),
 				userID: z.string(),
+				details: z.string(),
 			}),
 		)
 		.mutation(({ ctx, input }) => {
@@ -40,6 +43,7 @@ export const todosRouter = createTRPCRouter({
 				data: {
 					title: input.title,
 					completed: false,
+					details: input.details,
 					userId: input.userID,
 				},
 			});

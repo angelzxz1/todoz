@@ -5,7 +5,7 @@ import { api } from 'todoz/utils/api';
 interface Props {
 	children: ReactNode;
 }
-function Providers({ children }: Props) {
+function Providers({ children }: Props): JSX.Element {
 	return <SessionProvider>{children}</SessionProvider>;
 }
 
