@@ -24,26 +24,28 @@ const MainBody = ({ id }: MainBodyProps) => {
 	return (
 		<main className="h-full w-full" ref={constraintsRef}>
 			<CreateTodo userId={id} setList={setList} constraintsRef={constraintsRef} />
-			{list.length > 0 ? (
-				<div className="flex gap-2 overflow-x-auto py-2">
-					{list.map(item => (
-						<TodoCard
-							id={item.id}
-							completed={item.completed}
-							key={item.id}
-							title={item.title}
-							details={item.details}
-							setList={setList}
-						/>
-					))}
-				</div>
-			) : (
-				<div className="flex h-full w-full flex-col items-center justify-center">
-					<h1 className="rounded-xl bg-purple-500 px-2 text-[4rem]">
-						No items found, You&apos;re all up to date!{' '}
-					</h1>
-				</div>
-			)}
+			<div className="w-full">
+				{list.length > 0 ? (
+					<div className="flex gap-2 overflow-x-auto py-2">
+						{list.map(item => (
+							<TodoCard
+								id={item.id}
+								completed={item.completed}
+								key={item.id}
+								title={item.title}
+								details={item.details}
+								setList={setList}
+							/>
+						))}
+					</div>
+				) : (
+					<div className="flex h-full w-full flex-col items-center justify-center">
+						<h1 className="rounded-xl bg-purple-500 px-2 text-[4rem]">
+							No items found, You&apos;re all up to date!{' '}
+						</h1>
+					</div>
+				)}
+			</div>
 		</main>
 	);
 };

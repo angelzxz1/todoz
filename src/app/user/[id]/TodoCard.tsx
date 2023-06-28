@@ -11,6 +11,10 @@ type TodoCard = {
 	setList: Dispatch<SetStateAction<todos[]>>;
 };
 const TodoCard = ({ id, title, completed, details = '', setList }: TodoCard) => {
+	const [confirmation, setConfirmation] = useState<{ confirm: boolean; showConfirm: boolean }>({
+		confirm: false,
+		showConfirm: false,
+	});
 	const {
 		mutate,
 		isSuccess: isRemoved,
@@ -29,9 +33,9 @@ const TodoCard = ({ id, title, completed, details = '', setList }: TodoCard) => 
 	return (
 		<div
 			key={id}
-			className={`relative rounded-xl border-2 bg-teal-400 p-4 ${
+			className={`relative rounded-xl border-2 bg-gradient-to-br from-blue-600 to-purple-800 p-4 ${
 				completed ? `border-green-400` : `border-red-700`
-			}`}
+			} min-h-[18rem] min-w-[12rem]`}
 		>
 			<button
 				onClick={e => {
@@ -41,7 +45,7 @@ const TodoCard = ({ id, title, completed, details = '', setList }: TodoCard) => 
 			>
 				X
 			</button>
-			<h2>{title}</h2>
+			<h2 className="flex w-full items-center justify-center border-b border-white">{title}</h2>
 			{details}
 		</div>
 	);
