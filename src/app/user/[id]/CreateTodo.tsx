@@ -3,6 +3,7 @@ import { api } from 'todoz/utils/api';
 import { motion } from 'framer-motion';
 import { type todos } from '@prisma/client';
 import { type Dispatch, type SetStateAction, useState, type MutableRefObject } from 'react';
+import ChooseColor from './ChoseColor';
 
 type SwitchProps = {
 	setIsOn: Dispatch<SetStateAction<boolean>>;
@@ -43,6 +44,8 @@ const CreateTodo = ({ userId, setList, constraintsRef }: CreateTodoProps) => {
 	const [details, setDetails] = useState<string>('');
 	const [isOn, setIsOn] = useState<boolean>(false);
 	const [isOptional, setIsOptional] = useState<boolean>(false);
+	const [color, setColor] = useState<string>('#34FFBC');
+	const [toggleColor, setToggleColor] = useState<boolean>(false);
 
 	const { mutate, isLoading: isPosting } = api.todos.addTodo.useMutation({
 		onSuccess: e => {
@@ -50,6 +53,8 @@ const CreateTodo = ({ userId, setList, constraintsRef }: CreateTodoProps) => {
 				return [...prev, e];
 			});
 			setTitle('');
+			setDetails('');
+			setColor('#34FFBC');
 		},
 		onError: e => {
 			console.log(e);
@@ -61,6 +66,8 @@ const CreateTodo = ({ userId, setList, constraintsRef }: CreateTodoProps) => {
 			drag={isOn}
 			dragConstraints={constraintsRef}
 		>
+			{toggleColor ? <ChooseColor setColor={setColor} setToggleColor={setToggleColor} /> : <></>}
+
 			<div className="relative flex items-center justify-center border-b pb-2">
 				<div className="">{isOn ? 'Movable' : 'Not movable'}</div>
 
@@ -85,9 +92,21 @@ const CreateTodo = ({ userId, setList, constraintsRef }: CreateTodoProps) => {
 						setDetails(e.target.value);
 					}}
 				></textarea>
-				<div className="mb-4 flex w-full items-center justify-start">
+				<div className=" flex w-full items-center justify-start">
 					<label className="mr-4">Is Optional?</label>
 					<Switch isOn={isOptional} setIsOn={setIsOptional} />
+				</div>
+				<div className="mb-4 flex w-full flex-col">
+					<div className="my-2 flex w-full items-center justify-start">
+						<div className="mr-6">Note color</div>
+						<div
+							style={{ background: color }}
+							className="h-8 w-8 cursor-pointer rounded-full"
+							onClick={() => {
+								setToggleColor(prev => !prev);
+							}}
+						/>
+					</div>
 				</div>
 				<button
 					className="hover: flex w-full items-center justify-center rounded-full bg-black transition-shadow hover:shadow-button hover:shadow-purple-900"
@@ -101,12 +120,13 @@ const CreateTodo = ({ userId, setList, constraintsRef }: CreateTodoProps) => {
 							);
 						if (details === '') return alert('Give some deatils for this task');
 
-						return mutate({ title: title, userID: userId, details: details });
+						return mutate({ title: title, userID: userId, details: details, bgColor: color });
 					}}
 				>
 					Add
 				</button>
 			</div>
+
 			<div className="flex w-full items-center justify-center">{isPosting ? 'Adding todo...' : ''}</div>
 		</motion.div>
 	);

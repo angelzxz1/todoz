@@ -98,7 +98,6 @@ const LoginPage = () => {
 		generateRandomArray(100, 5),
 		generateRandomArray(100, 7),
 	];
-	console.log(items);
 	return (
 		<div className="flex h-screen w-full flex-col items-center justify-center">
 			<div className="flex h-3/4 w-1/2 flex-wrap justify-center overflow-hidden rounded-xl ">

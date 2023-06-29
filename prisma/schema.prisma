@@ -63,6 +63,7 @@ model todos {
     completed Boolean  @default(false)
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
+    bgColor   String
 }
 
 // model VerificationToken {

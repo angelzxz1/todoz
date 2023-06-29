@@ -35,6 +35,7 @@ const MainBody = ({ id }: MainBodyProps) => {
 								title={item.title}
 								details={item.details}
 								setList={setList}
+								bgColor={item.bgColor}
 							/>
 						))}
 					</div>

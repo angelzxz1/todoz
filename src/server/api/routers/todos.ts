@@ -36,6 +36,7 @@ export const todosRouter = createTRPCRouter({
 				title: z.string(),
 				userID: z.string(),
 				details: z.string(),
+				bgColor: z.string(),
 			}),
 		)
 		.mutation(({ ctx, input }) => {
@@ -45,6 +46,7 @@ export const todosRouter = createTRPCRouter({
 					completed: false,
 					details: input.details,
 					userId: input.userID,
+					bgColor: input.bgColor,
 				},
 			});
 		}),

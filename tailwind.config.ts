@@ -39,7 +39,11 @@ export default {
 					core: '#54476E',
 					dark: '#372F48',
 				},
-				warningRed: '#FF2850',
+				warningRed: {
+					light: '#FF5C5C',
+					core: '#FF2850',
+					dark: '#a0152e',
+				},
 				alertOrange: {
 					light: '#FF9E37',
 					core: '#FF9037',
