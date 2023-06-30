@@ -26,7 +26,7 @@ const MainBody = ({ id }: MainBodyProps) => {
 			<CreateTodo userId={id} setList={setList} constraintsRef={constraintsRef} />
 			<div className="w-full">
 				{list.length > 0 ? (
-					<div className="flex gap-2 overflow-x-auto py-2">
+					<div className="flex gap-4 overflow-x-auto px-4 py-2">
 						{list.map(item => (
 							<TodoCard
 								id={item.id}

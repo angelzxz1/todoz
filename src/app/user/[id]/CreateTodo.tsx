@@ -4,35 +4,7 @@ import { motion } from 'framer-motion';
 import { type todos } from '@prisma/client';
 import { type Dispatch, type SetStateAction, useState, type MutableRefObject } from 'react';
 import ChooseColor from './ChoseColor';
-
-type SwitchProps = {
-	setIsOn: Dispatch<SetStateAction<boolean>>;
-	isOn: boolean;
-	className?: string;
-};
-const Switch = ({ setIsOn, isOn, className = '' }: SwitchProps): JSX.Element => {
-	return (
-		<div
-			className={`flex h-4 w-8 cursor-pointer items-center justify-between rounded-full ${
-				isOn ? `bg-green-400` : `bg-gray-400`
-			} ${className}`}
-			onClick={() => {
-				setIsOn(prev => !prev);
-			}}
-		>
-			<motion.div
-				className="h-4 w-4 rounded-full bg-white"
-				animate={{
-					x: isOn ? 16 : 0,
-				}}
-				transition={{
-					type: 'spring',
-					bounce: 0.5,
-				}}
-			></motion.div>
-		</div>
-	);
-};
+import Switch from './Switch';
 
 type CreateTodoProps = {
 	userId: string;
@@ -62,7 +34,7 @@ const CreateTodo = ({ userId, setList, constraintsRef }: CreateTodoProps) => {
 	});
 	return (
 		<motion.div
-			className="fixed right-0 top-1/2 z-10 w-[16rem] -translate-y-1/2 rounded-lg border border-white bg-[#ffffff55] p-4 backdrop-blur-lg"
+			className="fixed right-0 top-1/2 z-10 w-[16rem] -translate-y-1/2 rounded-lg border border-white bg-[#00000075] p-4 backdrop-blur-lg"
 			drag={isOn}
 			dragConstraints={constraintsRef}
 		>

@@ -5,7 +5,7 @@ export default {
 	theme: {
 		extend: {
 			boxShadow: {
-				button: 'inset -0.5rem -0.5rem 0.75rem 0.05rem',
+				button: 'inset 0 -0.5rem 0.75rem 0.05rem',
 			},
 			height: {
 				'nav-screen': 'calc(100vh - 0rem)',

@@ -1,12 +1,13 @@
 import { type Dispatch, type SetStateAction, useState, type MutableRefObject } from 'react';
 import { type todos } from '@prisma/client';
 import { api } from 'todoz/utils/api';
+import Switch from './Switch';
 
 type TodoCard = {
 	id: string;
-	title?: string;
+	title: string;
 	details?: string;
-	completed?: boolean;
+	completed: boolean;
 	bgColor: string;
 	setList: Dispatch<SetStateAction<todos[]>>;
 };
@@ -15,6 +16,12 @@ const TodoCard = ({ id, title, completed, details = '', bgColor, setList }: Todo
 		confirm: false,
 		showConfirm: false,
 	});
+	const [enableEdit, setEnableEdit] = useState<boolean>(false);
+	const [cardTitle, setCardtitle] = useState<string>(title);
+	const [cardDetails, setCardDetails] = useState<string>(details);
+	const [cardCompleted, setCardCompleted] = useState<boolean>(completed);
+	const [cardBgColor, setCardBgColor] = useState<string>(bgColor);
+
 	const {
 		mutate,
 		isSuccess: isRemoved,
@@ -35,9 +42,10 @@ const TodoCard = ({ id, title, completed, details = '', bgColor, setList }: Todo
 			key={id}
 			className={`relative rounded-xl border-2 p-4 text-black ${
 				completed ? `border-green-400` : `border-red-700`
-			} min-h-[18rem] min-w-[12rem]`}
-			style={{ background: bgColor }}
+			} h-[18.5rem] min-h-[18.5rem]  w-[14rem] min-w-[14rem]`}
+			style={{ background: cardBgColor }}
 		>
+			<Switch isOn={enableEdit} setIsOn={setEnableEdit} />
 			<button
 				onClick={e => {
 					mutate({ id: id });
@@ -46,8 +54,23 @@ const TodoCard = ({ id, title, completed, details = '', bgColor, setList }: Todo
 			>
 				X
 			</button>
-			<h2 className="flex w-full items-center justify-center border-b border-black">{title}</h2>
-			{details}
+			<input
+				className="flex w-full items-center justify-center border-b border-black"
+				type="text"
+				value={cardTitle}
+				onChange={e => {
+					setCardtitle(e.target.value);
+				}}
+				contentEditable={enableEdit}
+			/>
+			<textarea
+				className="w-full"
+				value={cardDetails}
+				onChange={e => {
+					setCardDetails(e.target.value);
+				}}
+				contentEditable={enableEdit}
+			></textarea>
 		</div>
 	);
 };
