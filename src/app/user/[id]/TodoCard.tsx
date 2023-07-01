@@ -65,10 +65,10 @@ const TodoCard = ({ id, title, completed, details = '', bgColor, setList }: Todo
 			/>
 			<textarea
 				className="w-full"
-				value={cardDetails}
-				onChange={e => {
-					setCardDetails(e.target.value);
-				}}
+				// value={cardDetails}
+				// onChange={e => {
+				// 	setCardDetails(e.target.value);
+				// }}
 				contentEditable={enableEdit}
 			></textarea>
 		</div>
